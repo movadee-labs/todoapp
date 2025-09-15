@@ -1,6 +1,8 @@
-import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
-import { MockDirective } from 'ng-mocks';
 import { RouterOutlet } from '@angular/router';
+import type { Spectator } from '@ngneat/spectator/jest';
+import { createComponentFactory } from '@ngneat/spectator/jest';
+import { MockDirective } from 'ng-mocks';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent (Spectator)', () => {
@@ -9,8 +11,8 @@ describe('AppComponent (Spectator)', () => {
 
   const createComponent = createComponentFactory({
     component: AppComponent,
-    declarations: [MockDirective(RouterOutlet)]
-   });
+    declarations: [MockDirective(RouterOutlet)],
+  });
 
   beforeEach(() => {
     spectator = createComponent();
@@ -20,5 +22,4 @@ describe('AppComponent (Spectator)', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-
 });
