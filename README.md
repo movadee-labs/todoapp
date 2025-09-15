@@ -216,3 +216,37 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+## Internationalization (i18n)
+
+Locales
+- Source locale: `en`
+- Additional locale: `fr`
+
+Where translations live
+- Source strings are extracted to `src/locale/messages.xlf`
+- French translations: `src/locale/messages.fr.xlf`
+
+How to add a translatable string
+1) In templates, add `i18n` with an ID where needed, e.g.:
+   ```html
+   <h1 i18n="@@app.hello">Hello, {{ title }}</h1>
+   ```
+2) Extract messages:
+   ```bash
+   npm run i18n:extract
+   ```
+3) Update `src/locale/messages.fr.xlf` with the `<target>` translations.
+
+Build localized bundles
+- Single command builds both locales:
+  ```bash
+  npm run build
+  ```
+- Output folders:
+  - `dist/todoapp/en/`
+  - `dist/todoapp/fr/`
+
+Notes
+- `@angular/localize` is included as a dependency.
+- The XLF files include source file/line metadata for translator context; it’s safe to ignore.

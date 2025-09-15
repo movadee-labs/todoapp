@@ -5,6 +5,12 @@
   "projects": {
     "todoapp": {
       "projectType": "application",
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "fr": "src/locale/messages.fr.xlf"
+        }
+      },
       "schematics": {
         "@schematics/angular:component": {
           "style": "scss"
@@ -25,6 +31,7 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
+            "localize": true,
             "assets": [
               {
                 "glob": "**/*",
@@ -37,6 +44,16 @@
             "scripts": []
           },
           "configurations": {
+            "fr": {
+              "localize": [
+                "fr"
+              ]
+            },
+            "en": {
+              "localize": [
+                "en"
+              ]
+            },
             "production": {
               "budgets": [
                 {

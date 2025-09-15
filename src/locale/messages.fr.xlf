@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<xliff version="1.2" xmlns="urn:oasis:names:tc:xliff:document:1.2">
+  <file source-language="en" target-language="fr" datatype="plaintext" original="ng2.template">
+    <body>
+      <trans-unit id="app.hello" datatype="html">
+        <source>Hello, <x id="INTERPOLATION" equiv-text="{{ title }}"/></source>
+        <target>Bonjour, <x id="INTERPOLATION" equiv-text="{{ title }}"/></target>
+      </trans-unit>
+      <trans-unit id="app.congrats" datatype="html">
+        <source>Congratulations! Your app is running. 🎉</source>
+        <target>Félicitations ! Votre application fonctionne. 🎉</target>
+      </trans-unit>
+    </body>
+  </file>
+</xliff>
+
+
