@@ -36,13 +36,92 @@ ng build
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
 
-## Running unit tests
+## Testing
 
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+This project uses **Jest** with **ng-mocks** for unit testing Angular components.
+
+### Tech Stack
+
+- **Jest**: JavaScript testing framework - faster than Karma, better debugging, modern tooling
+- **ng-mocks**: Mocking library for Angular components, directives, and services
+- **jest-preset-angular**: Jest preset for Angular applications with Zone.js integration
+
+### Quick Start
 
 ```bash
-ng test
+# Run tests once
+npm test
+
+# Run tests in watch mode
+npm run test:watch
+
+# Run tests with coverage
+npm run test:coverage
+
+# Run tests for CI
+npm run test:ci
 ```
+
+### Writing Tests
+
+#### Basic Component Test
+```typescript
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { MockDirective } from 'ng-mocks';
+import { RouterOutlet } from '@angular/router';
+import { MyComponent } from './my.component';
+
+describe('MyComponent', () => {
+  let component: MyComponent;
+  let fixture: ComponentFixture<MyComponent>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [MyComponent],
+      declarations: [MockDirective(RouterOutlet)]
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(MyComponent);
+    component = fixture.componentInstance;
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+```
+
+#### Mocking Directives
+```typescript
+// Mock RouterOutlet
+declarations: [MockDirective(RouterOutlet)]
+
+// Mock multiple directives
+declarations: [
+  MockDirective(RouterOutlet),
+  MockDirective(SomeOtherDirective)
+]
+```
+
+#### Mocking Services
+```typescript
+import { MockService } from 'ng-mocks';
+
+// In TestBed configuration
+providers: [
+  { provide: MyService, useValue: MockService(MyService) }
+]
+```
+
+### Coverage
+
+Coverage reports are generated in the `coverage/` directory with 80% threshold for statements, branches, functions, and lines.
+
+### Documentation
+
+- [Jest Documentation](https://jestjs.io/docs/getting-started)
+- [ng-mocks Documentation](https://ng-mocks.sudo.eu/)
+- [Angular Testing Guide](https://angular.dev/guide/testing)
 
 ## Running end-to-end tests
 
