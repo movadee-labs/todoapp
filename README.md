@@ -162,6 +162,40 @@ npm run prepare
 - Why: consistent, lightweight popups on macOS/Windows/Linux so devs notice failures even from GUI commits.
 - How to use: no action needed—on failure you’ll see a notification like “Some unit tests failed…”. On success it stays silent.
 
+## Linting, Formatting, and Editor Setup
+
+### ESLint
+- Stack: Angular ESLint + TypeScript ESLint (balanced “recommended” rules).
+- Coverage: app code and tests (`src/**/*.{ts,html}`).
+- Extras: import ordering and `consistent-type-imports` enabled.
+- Warnings vs errors: errors fail the command; warnings do not. Not wired to pre-commit yet.
+
+Commands:
+```bash
+# Check
+npm run lint
+
+# Auto-fix safe issues
+npm run lint:fix
+```
+
+### Prettier
+- Purpose: consistent formatting; integrated with ESLint via `eslint-plugin-prettier` and `eslint-config-prettier`.
+- Runs on save in VSCode (see settings below). Use `lint:fix` for bulk fixes.
+
+### VSCode configuration
+- Workspace settings (`.vscode/settings.json`) enable:
+  - format on save
+  - ESLint and Prettier fixes on save
+- Recommended extensions (`.vscode/extensions.json`):
+  - `dbaeumer.vscode-eslint`
+  - `esbenp.prettier-vscode`
+  - `angular.ng-template`
+
+Notes:
+- If you don’t see ESLint diagnostics, ensure the ESLint extension is enabled for the workspace.
+- We may add a lint hook later (pre-commit/pre-push) once the codebase is clean.
+
 ## Running end-to-end tests
 
 For end-to-end (e2e) testing, run:
