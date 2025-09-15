@@ -1,8 +1,29 @@
 #!/bin/sh
-LOGFILE='.git/.precommit-tests.log'
-if npm run --silent test:precommit > "$LOGFILE" 2>&1; then
-  echo "✔ All tests passed. Proceeding with commit."
-  [ -f "$LOGFILE" ] && rm -f "$LOGFILE"
+LINT_LOG='.git/.precommit-lint.log'
+TEST_LOG='.git/.precommit-tests.log'
+
+# 1) Lint (auto-fix, then verify)
+if ! npm run --silent lint:fix > "$LINT_LOG" 2>&1; then
+  : # ignore; we verify next step
+fi
+if ! npm run --silent lint >> "$LINT_LOG" 2>&1; then
+  echo "✖ Lint errors found. Commit blocked."
+  echo
+  echo 'What to do next:'
+  echo '1) Open VSCode → Output → select "Git" to see details.'
+  echo '2) Fix lint issues locally: npm run lint:fix (then npm run lint)'
+  echo '3) In emergencies only, bypass with: git commit --no-verify'
+  if [ -f scripts/notify.js ]; then
+    node scripts/notify.js "Pre-commit" "Lint errors found. Open VSCode Output → Git for details." >/dev/null 2>&1 || true
+  fi
+  exit 1
+fi
+
+# 2) Tests
+if npm run --silent test:precommit > "$TEST_LOG" 2>&1; then
+  echo "✔ Lint and tests passed. Proceeding with commit."
+  [ -f "$LINT_LOG" ] && rm -f "$LINT_LOG"
+  [ -f "$TEST_LOG" ] && rm -f "$TEST_LOG"
   exit 0
 else
   echo "✖ Some unit tests failed. Commit blocked."
@@ -12,12 +33,9 @@ else
   echo '2) Fix the failing tests or adjust code accordingly.'
   echo '3) Re-run locally: npm test'
   echo '4) In emergencies only, bypass with: git commit --no-verify'
-  # Cross-platform notification (only on failure)
   if [ -f scripts/notify.js ]; then
     node scripts/notify.js "Pre-commit" "Some unit tests failed. Open VSCode Output → Git for details." >/dev/null 2>&1 || true
   fi
-  # Keep detailed output in log file for local inspection if needed
-  echo "(Detailed output saved to $LOGFILE)" >/dev/null
   exit 1
 fi
 
