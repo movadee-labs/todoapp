@@ -143,12 +143,19 @@ describe('MyWidgetComponent', () => {
 
 ## Pre-commit hook
 
-What it does: runs the full test suite with concise output; blocks the commit on failures. We use Husky to run Jest before each commit.
+What it does (in this order):
+- Lints the project (ESLint) and auto-fixes safe issues.
+- Re-runs lint to verify no errors remain; blocks commit if errors persist.
+- Runs the full Jest suite; blocks commit if any tests fail.
+
+Behavior:
+- Output in VSCode GUI commits is concise. For details open: View → Output → select "Git".
+- Logs are saved locally for inspection:
+  - Lint log: `.git/.precommit-lint.log`
+  - Test log: `.git/.precommit-tests.log`
 
 
-```bash
-git commit --no-verify
-```
+Bypass (emergencies only): `git commit --no-verify`
 
 - Re-install hooks (if hooks stop running locally):
 
@@ -158,9 +165,9 @@ npm run prepare
 
 ### Notifications (cross‑platform)
 
-- We use `node-notifier` to show a system notification only when tests fail.
+- We use `node-notifier` to show a system notification only when lint or tests fail.
 - Why: consistent, lightweight popups on macOS/Windows/Linux so devs notice failures even from GUI commits.
-- How to use: no action needed—on failure you’ll see a notification like “Some unit tests failed…”. On success it stays silent.
+- Usage: no action needed—on failure you’ll see a notification like “Some unit tests failed…” or “Lint errors found…”. On success it stays silent.
 
 ## Linting, Formatting, and Editor Setup
 
