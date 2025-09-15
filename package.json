@@ -11,7 +11,9 @@
     "test:ci": "jest --ci --coverage --watchAll=false",
     "test:coverage": "jest --coverage --watchAll=false",
     "prepare": "husky",
-    "test:precommit": "jest --bail --ci --silent --reporters=default --maxWorkers=50%"
+    "test:precommit": "jest --bail --ci --silent --reporters=default --maxWorkers=50%",
+    "lint": "eslint \"src/**/*.{ts,html}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,html}\" --fix"
   },
   "private": true,
   "dependencies": {
@@ -30,15 +32,27 @@
   "devDependencies": {
     "@angular-builders/jest": "^17.0.1",
     "@angular-devkit/build-angular": "^19.2.15",
+    "@angular-eslint/eslint-plugin": "^20.3.0",
+    "@angular-eslint/eslint-plugin-template": "^20.3.0",
+    "@angular-eslint/template-parser": "^20.3.0",
     "@angular/cli": "^19.2.15",
     "@angular/compiler-cli": "^19.2.0",
     "@ngneat/spectator": "^21.0.1",
     "@types/jest": "^29.5.12",
+    "@typescript-eslint/eslint-plugin": "^8.43.0",
+    "@typescript-eslint/parser": "^8.43.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-jest": "^29.0.1",
+    "eslint-plugin-prettier": "^5.5.4",
     "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.2.3",
     "ng-mocks": "^14.13.5",
     "node-notifier": "^10.0.1",
+    "prettier": "^3.6.2",
     "ts-jest": "^29.1.2",
     "typescript": "~5.7.2"
   }
