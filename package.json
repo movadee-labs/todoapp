@@ -9,7 +9,9 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:ci": "jest --ci --coverage --watchAll=false",
-    "test:coverage": "jest --coverage --watchAll=false"
+    "test:coverage": "jest --coverage --watchAll=false",
+    "prepare": "husky",
+    "test:precommit": "jest --bail --ci --silent --reporters=default --maxWorkers=50%"
   },
   "private": true,
   "dependencies": {
@@ -32,9 +34,11 @@
     "@angular/compiler-cli": "^19.2.0",
     "@ngneat/spectator": "^21.0.1",
     "@types/jest": "^29.5.12",
+    "husky": "^9.1.7",
     "jest": "^29.7.0",
     "jest-preset-angular": "^14.2.3",
     "ng-mocks": "^14.13.5",
+    "node-notifier": "^10.0.1",
     "ts-jest": "^29.1.2",
     "typescript": "~5.7.2"
   }

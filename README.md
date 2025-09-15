@@ -42,9 +42,14 @@ This project uses **Jest** with **ng-mocks** for unit testing Angular components
 
 ### Tech Stack
 
-- **Jest**: JavaScript testing framework - faster than Karma, better debugging, modern tooling
-- **ng-mocks**: Mocking library for Angular components, directives, and services
-- **jest-preset-angular**: Jest preset for Angular applications with Zone.js integration
+- **Jest**: Test runner and assertion library.
+  - Benefits: fast execution, clear failures, great watch mode, rich ecosystem. Replaces Karma for a simpler, faster DX.
+- **jest-preset-angular**: Angular-specific Jest preset.
+  - Benefits: configures Zone.js test environment and Angular transforms so components, templates, and DI just work.
+- **ng-mocks**: Mocks for Angular directives, components, and services.
+  - Benefits: easy, type-safe mocks without boilerplate; speeds up tests by replacing heavy dependencies.
+- **Spectator**: Ergonomic helpers for Angular tests (optional but supported).
+  - Benefits: less boilerplate via `createComponentFactory`, convenient DOM/query helpers, cleaner input/output testing.
 
 ### Quick Start
 
@@ -62,66 +67,100 @@ npm run test:coverage
 npm run test:ci
 ```
 
-### Writing Tests
+### Quick Start
 
-#### Basic Component Test
-```typescript
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { MockDirective } from 'ng-mocks';
-import { RouterOutlet } from '@angular/router';
-import { MyComponent } from './my.component';
+```bash
+# Run tests once
+npm test
 
-describe('MyComponent', () => {
-  let component: MyComponent;
-  let fixture: ComponentFixture<MyComponent>;
+# Run tests in watch mode
+npm run test:watch
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [MyComponent],
-      declarations: [MockDirective(RouterOutlet)]
-    }).compileComponents();
+# Run tests with coverage
+npm run test:coverage
 
-    fixture = TestBed.createComponent(MyComponent);
-    component = fixture.componentInstance;
-  });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
-```
-
-#### Mocking Directives
-```typescript
-// Mock RouterOutlet
-declarations: [MockDirective(RouterOutlet)]
-
-// Mock multiple directives
-declarations: [
-  MockDirective(RouterOutlet),
-  MockDirective(SomeOtherDirective)
-]
-```
-
-#### Mocking Services
-```typescript
-import { MockService } from 'ng-mocks';
-
-// In TestBed configuration
-providers: [
-  { provide: MyService, useValue: MockService(MyService) }
-]
+# Run tests for CI
+npm run test:ci
 ```
 
 ### Coverage
 
 Coverage reports are generated in the `coverage/` directory with 80% threshold for statements, branches, functions, and lines.
 
+
+### Writing Tests (Jest + Spectator + ng-mocks)
+
+```typescript
+// Example: Combine Jest + Spectator + ng-mocks in one spec
+import { createComponentFactory, Spectator } from '@ngneat/spectator/jest';
+import { MockDirective, MockService } from 'ng-mocks';
+import { RouterOutlet } from '@angular/router';
+
+import { MyService } from '../services/my.service';
+import { MyWidgetComponent } from './my-widget.component';
+
+describe('MyWidgetComponent', () => {
+  let component: Spectator<MyWidgetComponent>;
+
+  const createComponent = createComponentFactory({
+    component: MyWidgetComponent,
+    declarations: [MockDirective(RouterOutlet)], // mock a directive
+    providers: [
+      { provide: MyService, useValue: MockService(MyService) } // mock a service
+    ],
+    animations: false // keep tests deterministic
+  });
+
+  beforeEach(() => (component = createComponent()));
+
+  it('creates the component', () => {
+    expect(component.component).toBeTruthy();
+  });
+
+  it('renders a dynamic title', () => {
+    component.setInput('title', 'Hello');
+    expect(component.query('h1')?.textContent).toContain('Hello');
+  });
+
+  it('has a mocked router-outlet', () => {
+    expect(component.query('router-outlet')).toBeTruthy();
+  });
+
+  it('interacts with the DOM', () => {
+    component.click('button.save');
+    const items = component.queryAll('.list-item');
+    expect(items.length).toBeGreaterThan(0);
+  });
+});
+```
+
 ### Documentation
 
 - [Jest Documentation](https://jestjs.io/docs/getting-started)
 - [ng-mocks Documentation](https://ng-mocks.sudo.eu/)
 - [Angular Testing Guide](https://angular.dev/guide/testing)
+- [Spectator Documentation](https://ngneat.github.io/spectator/)
+
+## Pre-commit hook
+
+What it does: runs the full test suite with concise output; blocks the commit on failures. We use Husky to run Jest before each commit.
+
+
+```bash
+git commit --no-verify
+```
+
+- Re-install hooks (if hooks stop running locally):
+
+```bash
+npm run prepare
+```
+
+### Notifications (cross‑platform)
+
+- We use `node-notifier` to show a system notification only when tests fail.
+- Why: consistent, lightweight popups on macOS/Windows/Linux so devs notice failures even from GUI commits.
+- How to use: no action needed—on failure you’ll see a notification like “Some unit tests failed…”. On success it stays silent.
 
 ## Running end-to-end tests
 

@@ -1,0 +1,23 @@
+#!/bin/sh
+LOGFILE='.git/.precommit-tests.log'
+if npm run --silent test:precommit > "$LOGFILE" 2>&1; then
+  echo "✔ All tests passed. Proceeding with commit."
+  [ -f "$LOGFILE" ] && rm -f "$LOGFILE"
+  exit 0
+else
+  echo "✖ Some unit tests failed. Commit blocked."
+  echo
+  echo 'What to do next:'
+  echo '1) Open VSCode → Output → select "Git" to see details.'
+  echo '2) Fix the failing tests or adjust code accordingly.'
+  echo '3) Re-run locally: npm test'
+  echo '4) In emergencies only, bypass with: git commit --no-verify'
+  # Cross-platform notification (only on failure)
+  if [ -f scripts/notify.js ]; then
+    node scripts/notify.js "Pre-commit" "Some unit tests failed. Open VSCode Output → Git for details." >/dev/null 2>&1 || true
+  fi
+  # Keep detailed output in log file for local inspection if needed
+  echo "(Detailed output saved to $LOGFILE)" >/dev/null
+  exit 1
+fi
+
