@@ -1,0 +1,71 @@
+.cp {
+  display: flex;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.cp-card {
+  width: 100%;
+  max-width: 480px;
+  padding: 0.75rem 1rem;
+}
+
+.cp-label {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.cp-label-text {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+}
+
+.cp-input {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.cp-error {
+  color: #b00020;
+  margin-top: 0.5rem;
+}
+
+.cp-list {
+  list-style: none;
+  padding-left: 0;
+  margin-top: 0.5rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+}
+
+.cp-list-item {
+  padding: 0.5rem 0.75rem;
+  cursor: pointer;
+}
+
+.cp-list-item+.cp-list-item {
+  border-top: 1px solid #eee;
+}
+
+.cp-list-title {
+  font-weight: 500;
+}
+
+.cp-list-desc {
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.cp-selected {
+  margin-top: 0.75rem;
+}
+
+.cp-selected-title {
+  margin: 0 0 0.5rem 0;
+}
+
+.cp-selected-line {
+  margin: 0.125rem 0;
+}

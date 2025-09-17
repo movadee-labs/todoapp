@@ -1,0 +1,31 @@
+<div class="cp">
+  <div class="cp-card">
+    <label class="cp-label">
+      <span class="cp-label-text">Address search</span>
+      <input class="cp-input" type="text" [ngModel]="query()" (ngModelChange)="query.set($event); onInput()"
+        placeholder="Start typing an address" />
+    </label>
+
+    <div *ngIf="error()" class="cp-error">{{ error() }}</div>
+
+    <ul *ngIf="suggestions().length && !selectedAddress()" class="cp-list">
+      <li *ngFor="let item of suggestions()" class="cp-list-item" (click)="select(item.Id)">
+        <div class="cp-list-title">{{ item.Text }}</div>
+        <div *ngIf="item.Description" class="cp-list-desc">{{ item.Description }}</div>
+      </li>
+    </ul>
+
+    <div *ngIf="selectedAddress() as addr" class="cp-selected">
+      <h3 class="cp-selected-title">Selected address</h3>
+      <div class="cp-selected-line">{{ addr.Line1 }}</div>
+      <div *ngIf="addr.Line2" class="cp-selected-line">{{ addr.Line2 }}</div>
+      <div *ngIf="addr.Line3" class="cp-selected-line">{{ addr.Line3 }}</div>
+      <div class="cp-selected-line">
+        {{ addr.City }}
+        <span *ngIf="addr.ProvinceName">, {{ addr.ProvinceName }}</span>
+        <span *ngIf="addr.PostalCode"> {{ addr.PostalCode }}</span>
+      </div>
+      <div *ngIf="addr.CountryName" class="cp-selected-line">{{ addr.CountryName }}</div>
+    </div>
+  </div>
+</div>
