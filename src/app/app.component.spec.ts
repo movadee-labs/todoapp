@@ -1,9 +1,10 @@
-import { RouterOutlet } from '@angular/router';
 import type { Spectator } from '@ngneat/spectator/jest';
 import { createComponentFactory } from '@ngneat/spectator/jest';
-import { MockDirective } from 'ng-mocks';
+import { TranslateModule, TranslatePipe } from '@ngx-translate/core';
+import { MockComponent, MockPipe } from 'ng-mocks';
 
 import { AppComponent } from './app.component';
+import { LanguageSelectorComponent } from './language-selector/language-selector.component';
 
 describe('AppComponent (Spectator)', () => {
   let spectator: Spectator<AppComponent>;
@@ -11,7 +12,11 @@ describe('AppComponent (Spectator)', () => {
 
   const createComponent = createComponentFactory({
     component: AppComponent,
-    declarations: [MockDirective(RouterOutlet)],
+    declarations: [
+      MockComponent(LanguageSelectorComponent),
+      MockPipe(TranslatePipe, (key: string) => `Mocked: ${key}`),
+    ],
+    imports: [TranslateModule],
   });
 
   beforeEach(() => {

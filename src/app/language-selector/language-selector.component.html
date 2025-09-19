@@ -1,0 +1,10 @@
+<div class="language-selector">
+  <label class="language-label">
+    Select Language:
+    <select class="language-select" [(ngModel)]="selectedLanguage">
+      <option *ngFor="let lang of languages" [value]="lang.code">
+        {{ lang.name }}
+      </option>
+    </select>
+  </label>
+</div>
