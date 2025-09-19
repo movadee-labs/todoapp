@@ -1,12 +1,10 @@
 import { Component } from '@angular/core';
-import { TranslateModule } from '@ngx-translate/core';
-
-import { LanguageSelectorComponent } from './language-selector/language-selector.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [TranslateModule, LanguageSelectorComponent],
+  imports: [RouterModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
