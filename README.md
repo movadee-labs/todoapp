@@ -216,3 +216,57 @@ Angular CLI does not come with an end-to-end testing framework by default. You c
 ## Additional Resources
 
 For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+
+
+## Internationalization (NGX Translate) — Quick Reference
+
+This app uses NGX Translate for runtime i18n with simple JSON files.
+
+- **Config**: `src/app/app.config.ts` sets fallback language to `en` and loads JSON from `public/assets/i18n/`.
+- **Files**: Add/update keys in `public/assets/i18n/en.json`, `public/assets/i18n/fr.json`, etc.
+
+Example JSON (`en.json`):
+```json
+{ "title": "Welcome to My App", "greeting": "Hello, {{name}}!" }
+```
+
+### Use in templates
+```html
+<h1>{{ 'title' | translate }}</h1>
+<p>{{ 'greeting' | translate: { name: userName } }}</p>
+```
+
+### Use in TypeScript
+```ts
+import { TranslateService } from '@ngx-translate/core';
+
+constructor(private t: TranslateService) {
+  this.t.use('en'); // optional; fallback is already "en"
+  const txt = this.t.instant('greeting', { name: 'Alla' });
+  this.t.get('greeting', { name: 'Alla' }).subscribe(v => console.log(v));
+}
+```
+
+### Switch language
+```ts
+this.t.use('fr');
+```
+
+### Add a new key
+1) Add the same key to all language files.
+```json
+// en.json
+{ "logout": "Log out" }
+// fr.json
+{ "logout": "Se déconnecter" }
+```
+
+### Add a new language
+1) Create `public/assets/i18n/es.json` with the same keys.
+2) Switch via `this.t.use('es')`.
+
+### Tips
+- Keep keys consistent across all languages.
+- Prefer placeholders (`{{name}}`) over string concatenation.
+- Missing keys fall back to English.
+- Ensure valid JSON (no trailing commas).
